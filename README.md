@@ -32,7 +32,7 @@ $ bundle
 ### With Rails controller
 
 This gem aims to give consistency of time handling using refrence time to Rails application.
-The layer, which should set reference time, is controller layer, because reference time is one of external input.
+The layer which should set reference time is controller layer, because reference time is one of external input.
 
 Include `Trice::ControllerMethods` to your controller
 
@@ -44,11 +44,11 @@ end
 
 Then your controller and view gets an accessor method to access consistent time object.
 
-- `requested_at`: returns timestamp of action invoked performing or stubbed timestamp.
+- `requested_at`: returns timestamp of action invoked (or stubbed timestamp, see below).
 
 ### Include helper module outside of controller
 
-Inlude `Trice::ReferenceTime` add `reference_time` instance method to lookup current reference time.
+Inlude `Trice::ReferenceTime` add `#reference_time` method to lookup current reference time.
 
 Use it in Rails model.
 
@@ -64,7 +64,8 @@ end
 
 ### Setting consistent reference time
 
-Set reference time with `Trice.refrence_time = _time_` or `Trice.with_refrence_time(_time_, &block)`. The time is stored in thread local variable. Accessible with `Trice.reference_time`..
+Set reference time with `Trice.refrence_time = _time_` or `Trice.with_refrence_time(_time_, &block)`.
+Accessible by `Trice.reference_time`..
 
 ```ruby
 p Time.now
@@ -83,6 +84,8 @@ Trice.with_refrence_time = nil
 p Trice.reference_time
 # => raise Trice::NoRefrenceTime
 ```
+
+The time is stored in thread local variable.
 
 ## Time Stubbing
 
