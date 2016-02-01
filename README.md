@@ -108,7 +108,7 @@ Value format, which specified both query parameter and header, should be `Time.p
 Toggle requested at stubbing in `config/initializers`. The default is below, enabled unelss `Rails.env.production?`.
 
 ```ruby
-Trice.support_performing_at_stubbing = Rails.env.production?
+Trice.support_performing_at_stubbing = !Rails.env.production?
 ```
 
 Setting callable object let you choice enable/disable dinamically by seeing request.
