@@ -88,9 +88,9 @@ p Trice.reference_time
 
 Trice allows you to stub reference time to run travelled time-testing and / or previewing your app in future time.
 
-Set `requested_at=<timish>` query parameter like below
+Set `_requested_at=<timish>` query parameter like below
 ```
-$ curl https://example.com/campaigns/12345?_performiing_at=20160215130
+$ curl https://example.com/campaigns/12345?_requested_at=20160215130
 ```
 
 Or can set HTTP header, useful for tests.
