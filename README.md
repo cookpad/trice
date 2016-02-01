@@ -1,10 +1,40 @@
 # Trice
 
-Provides `performing_at` timestamp. Use it instead of ad-hoc `Time.now`.
+Provide **reference time** concept to application. Use it instead of ad-hoc `Time.now`.
+
+## Progress
+
+- [ ] Usage items
+- [ ] query param stubbing
+- [ ] header stubbing
+- [ ] stubbing toggle
+- [ ] Test helpers (unit)
+- [ ] Test helpers (E2E)
+
+### Setting consistent reference time
+
+## Installation
+
+Add this line to your application's Gemfile:
+
+```ruby
+gem 'trice'
+```
+
+And then execute:
+
+```
+$ bundle
+```
 
 ## Usage
 
-Include `Trice::ControllerMethods` to your controller.
+### With Rails controller
+
+This gem aims to give consistency of time handling using refrence time to Rails application.
+The layer, which should set reference time, is controller layer, because reference time is one of external input.
+
+Include `Trice::ControllerMethods` to your controller
 
 ```ruby
 class ApplicationController < AC::Base
@@ -12,54 +42,75 @@ class ApplicationController < AC::Base
 end
 ```
 
-Then your controller gets 2 time accessor. (also available in view)
+Then your controller and view gets an accessor method to access consistent time object.
 
-- `performing_at`: returns timestamp of action invoked performing or stubbed timestamp.
-- `raw_performing_at`: returns timestamp of action invoked performing, not stubbed timestamp.
+- `requested_at`: returns timestamp of action invoked performing or stubbed timestamp.
 
-Use `performing_at` instead of ad-hoc `Time.now` in controller and view logic.
+### Include helper module outside of controller
 
-### Time Stubbing
+Inlude `Trice::ReferenceTime` add `reference_time` instance method to lookup current reference time.
 
-Trice allows you to stub time to run travelled time-testing and / or previewing your app in future time.
-テストなどのため、`performing_at`の時刻をスタブすることができます。
+Use it in Rails model.
 
-クエリパラメータに`_performiing_at=`というキーを含めると、`performing_at`をスタブできます。
-これは主に、時限機能をプレビューするのに使う想定です。
-```
-$ curl https://example.com/campaigns/12345?_performiing_at=20160215130
-```
+```ruby
+class MyWork
+  include Trice::ReferenceTime
 
-テストなどからアクセスする場合、リクエストヘッダでもスタブできます。
-```
-TricePrformingAt: 2016-02-15T13:00:00+09:00
-```
-
-それぞれ、`Time.parse`で指定できる文字を設定してください。
-
-#### Test helpers
-
-feature specでのヘルパーメソッドもあります。
-```
-scenario 'See Hinamatsuri special banner at 3/3 request' do
-  stub_performing_at Time.zone.parse('2016-03-03 10:00')
-
-  visit root_path
-  within '#custom-header' do
-    expect(page).to contain 'ひな祭り'
+  def do!(at: nil)
+    self.done_at = at || reference_time
   end
 end
 ```
 
+### Setting consistent reference time
+
+Set reference time with `Trice.refrence_time = _time_` or `Trice.with_refrence_time(_time_, &block)`. The time is stored in thread local variable. Accessible with `Trice.reference_time`..
+
+```ruby
+p Time.now
+=> 2016-02-01 11:25:37 +0900
+
+Trice.with_refrence_time = Time.iso8601('2016-02-01T09:00:00Z')
+p Trice.reference_time
+# => 2016-02-01 09:00:00 UTC
+
+Trice.with_refrence_time(Time.iso8601('2016-02-01T10:00:00Z')) do
+  p Trice.reference_time
+  # => 2016-02-01 10:00:00 UTC
+end
+
+Trice.with_refrence_time = nil
+p Trice.reference_time
+# => raise Trice::NoRefrenceTime
+```
+
+## Time Stubbing
+
+Trice allows you to stub reference time to run travelled time-testing and / or previewing your app in future time.
+
+Set `requested_at=<timish>` query parameter like below
+```
+$ curl https://example.com/campaigns/12345?_performiing_at=20160215130
+```
+
+Or can set HTTP header, useful for tests.
+```
+TriceRequestedAt: 2016-02-15T13:00:00+09:00
+```
+
+Value format, which specified both query parameter and header, should be `Time.parsse` parasable.
+
 #### Enable/Disable stubbing
 
-`config/initializers`などで、時刻をスタブするかどうかを切り替えられます。デフォルトでは`Rails.env.production?`以外で有効です。
-```
+Toggle requested at stubbing in `config/initializers`. The default is below, enabled unelss `Rails.env.production?`.
+
+```ruby
 Trice.support_performing_at_stubbing = Rails.env.production?
 ```
 
-callableを指定するとリクエストの中身を見てオンオフを切り替えられます。
-```
+Setting callable object let you choice enable/disable dinamically by seeing request.
+
+```ruby
 our_office_network = IPAddr.new('203.0.113.0/24')
 
 Trice.support_performing_at_stubbing = ->(req) {
@@ -67,6 +118,48 @@ Trice.support_performing_at_stubbing = ->(req) {
 
   our_office_network.include?(req.remote_ip)
 }
+```
+
+## Test helpers
+
+There is a test helper method for feature spec.
+
+```ruby
+RSpec.configure do |config|
+  config.include Trice::SpecHelper
+end
+```
+
+I recommend to give reference time to a modle by method and/or constructor argument because reference time is an external input, should be handled controller layer.
+But sometimes it is required  from deep inside of model logics and tests for them.
+
+Model unit spec has `with_refrence_time` and `set_now_to_reference_time` declarition method to set `Trice.reference_time` in an example.
+
+```ruby
+describe MyModel do
+  context  do
+    set_now_to_reference_time
+    let(:model) { MyModel.find_by_something(key) }
+
+    specify do
+      # can accessible `reference_time` in MyModel#do_something
+      expect { model.do_something }.not_to raise(Trice::NoRefrenceTime)
+    end
+  end
+end
+```
+
+Feature specs (or othre Capybara based E2E tests) also has helper method using stubbing mechanism. `stub_requested_at <timish>` set `X-Trice-Requested-At` automatically.
+
+```ruby
+scenario 'See Hinamatsuri special banner at 3/3 request' do
+  stub_requested_at Time.zone.parse('2016-03-03 10:00')
+
+  visit root_path
+  within '#custom-header' do
+    expect(page).to contain 'ひな祭り'
+  end
+end
 ```
 
 ## Development
