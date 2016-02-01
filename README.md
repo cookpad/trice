@@ -1,6 +1,6 @@
 # Trice
 
-Provide **reference time** concept to application. Use it instead of ad-hoc `Time.now`.
+Provides **reference time** concept to application. Use it instead of ad-hoc `Time.now`.
 
 ## Progress
 
@@ -31,7 +31,7 @@ $ bundle
 
 ### With Rails controller
 
-This gem aims to give consistency of time handling using refrence time to Rails application.
+This gem aims to serve consistency of time handling using refrence time to Rails application.
 The layer which should set reference time is controller layer, because reference time is one of external input.
 
 Include `Trice::ControllerMethods` to your controller
@@ -133,7 +133,7 @@ RSpec.configure do |config|
 end
 ```
 
-I recommend to give reference time to a modle by method and/or constructor argument because reference time is an external input, should be handled controller layer.
+I recommend to pass reference time to a modle by method and/or constructor argument because reference time is an external input, should be handled controller layer.
 But sometimes it is required  from deep inside of model logics and tests for them.
 
 Model unit spec has `with_refrence_time` and `set_now_to_reference_time` declarition method to set `Trice.reference_time` in an example.
