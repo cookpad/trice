@@ -15,6 +15,6 @@ describe Trice::ReferenceTime do
   end
 
   context 'Trice.reference_time is NOT set' do
-    specify { expect { my_obj.reference_time }.to raise_error(Trice::NoRefrenceTime) }
+    specify { expect { my_obj.reference_time }.to raise_error(Trice::NoReferenceTime) }
   end
 end

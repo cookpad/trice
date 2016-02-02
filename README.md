@@ -82,7 +82,7 @@ end
 
 Trice.with_refrence_time = nil
 p Trice.reference_time
-# => raise Trice::NoRefrenceTime
+# => raise Trice::NoReferenceTime
 ```
 
 The time is stored in thread local variable.
@@ -146,7 +146,7 @@ describe MyModel do
 
     specify do
       # can accessible `reference_time` in MyModel#do_something
-      expect { model.do_something }.not_to raise(Trice::NoRefrenceTime)
+      expect { model.do_something }.not_to raise(Trice::NoReferenceTime)
     end
   end
 end

@@ -1,4 +1,4 @@
 module Trice
   class Error < StandardError; end
-  class NoRefrenceTime < Error; end
+  class NoReferenceTime < Error; end
 end

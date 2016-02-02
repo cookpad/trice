@@ -12,7 +12,7 @@ module Trice
     end
 
     def reference_time
-      @backend.get || raise(NoRefrenceTime)
+      @backend.get || raise(NoReferenceTime)
     end
 
     def with_reference_time(time, &block)
