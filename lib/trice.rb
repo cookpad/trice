@@ -8,4 +8,6 @@ require 'trice/version'
 
 module Trice
   extend ReferenceTimeAccessor
+
+  mattr_accessor :support_requested_at_stubbing
 end
