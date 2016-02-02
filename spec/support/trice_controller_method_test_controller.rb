@@ -22,7 +22,9 @@ class TriceControllerMethodTestController < ActionController::Base
   include Trice::ControllerMethods
 
   def hi
-    @requested_at = requested_at
-    render text: @requested_at.iso8601
+    @requested_at_x  = requested_at
+    @requested_at_y  = requested_at
+
+    render nothing: true
   end
 end
