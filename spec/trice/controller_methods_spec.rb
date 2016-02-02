@@ -21,5 +21,28 @@ describe TriceControllerMethodTestController, type: :controller do
 
       specify { expect(assigns(:requested_at_x)).to eq time }
     end
+
+    context 'stubbed by header' do
+      before do
+        request.headers['X-Requested-At'] = time.iso8601
+        get :hi
+      end
+
+      specify { expect(assigns(:requested_at_x)).to eq time }
+    end
+
+    context 'stubbed by both' do
+      let(:time) { Time.zone.parse('2016-02-01 00:00:00') }
+
+      before do
+        request.headers['X-Requested-At'] = 1.day.ago(time).iso8601
+
+        get :hi, '_requested_at' => time.strftime('%Y%m%d%H%M%S')
+      end
+
+      specify 'prefers query params' do
+        expect(assigns(:requested_at_x)).to eq time
+      end
+    end
   end
 end

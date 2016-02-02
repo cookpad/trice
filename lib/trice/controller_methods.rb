@@ -2,7 +2,7 @@ module Trice
   module ControllerMethods
     class ReferRequestedAt
       QUERY_STUB_KEY  = '_requested_at'.freeze
-      HEADER_STUB_KEY = 'X-Requested-At'.freeze
+      HEADER_STUB_KEY = 'X-REQUESTED-AT'.freeze
 
       def around(controller, &action)
         t = extract_requested_at(controller.request)
@@ -17,6 +17,8 @@ module Trice
       def extract_requested_at(request)
         if request.params[QUERY_STUB_KEY]
           Time.zone.parse(request.params[QUERY_STUB_KEY])
+        elsif request.headers[HEADER_STUB_KEY]
+          Time.zone.parse(request.headers[HEADER_STUB_KEY])
         else
           Time.now
         end
