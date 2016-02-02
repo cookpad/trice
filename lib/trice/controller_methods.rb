@@ -1,12 +1,25 @@
 module Trice
   module ControllerMethods
     class ReferRequestedAt
+      QUERY_STUB_KEY  = '_requested_at'.freeze
+      HEADER_STUB_KEY = 'X-Requested-At'.freeze
+
       def around(controller, &action)
-        t = Time.zone.now
+        t = extract_requested_at(controller.request)
 
         controller.request.env['trice.reference_time'] = t
 
         Trice.with_reference_time(t, &action)
+      end
+
+      private
+
+      def extract_requested_at(request)
+        if request.params[QUERY_STUB_KEY]
+          Time.zone.parse(request.params[QUERY_STUB_KEY])
+        else
+          Time.now
+        end
       end
     end
 
