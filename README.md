@@ -4,10 +4,6 @@ Provides **reference time** concept to application. Use it instead of ad-hoc `Ti
 
 ## Progress
 
-- [ ] Usage items
-- [ ] query param stubbing
-- [ ] header stubbing
-- [ ] stubbing toggle
 - [ ] Test helpers (unit)
 - [ ] Test helpers (E2E)
 
