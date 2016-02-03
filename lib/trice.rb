@@ -7,6 +7,8 @@ require 'trice/reference_time_accessor'
 require 'trice/version'
 
 module Trice
+  autoload 'SpecHelper', 'trice/spec_helper'
+
   extend ReferenceTimeAccessor
 
   mattr_accessor :support_requested_at_stubbing
