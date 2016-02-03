@@ -2,11 +2,6 @@
 
 Provides **reference time** concept to application. Use it instead of ad-hoc `Time.now`.
 
-## Progress
-
-- [ ] Test helpers (unit)
-- [ ] Test helpers (E2E)
-
 ### Setting consistent reference time
 
 ## Installation
@@ -125,7 +120,7 @@ There is a test helper method for feature spec.
 
 ```ruby
 RSpec.configure do |config|
-  config.include Trice::SpecHelper
+  config.extend Trice::SpecHelper
 end
 ```
 
@@ -136,8 +131,10 @@ Model unit spec has `with_refrence_time` and `set_now_to_reference_time` declari
 
 ```ruby
 describe MyModel do
+  let(:reference_time) { Time.zone.parse('2016/02/03 12:00') }
   context  do
-    set_now_to_reference_time
+    set_reference_time { refrence_time }
+
     let(:model) { MyModel.find_by_something(key) }
 
     specify do
@@ -151,12 +148,14 @@ end
 Feature specs (or othre Capybara based E2E tests) also has helper method using stubbing mechanism. `stub_requested_at <timish>` set `X-Trice-Requested-At` automatically.
 
 ```ruby
-scenario 'See Hinamatsuri special banner at 3/3 request' do
+context 'on ひな祭り day' do
   stub_requested_at Time.zone.parse('2016-03-03 10:00')
 
-  visit root_path
-  within '#custom-header' do
-    expect(page).to contain 'ひな祭り'
+  scenario 'See Hinamatsuri special banner at 3/3 request' do
+    visit root_path
+    within '#custom-header' do
+      expect(page).to contain 'ひな祭り'
+    end
   end
 end
 ```
