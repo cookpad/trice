@@ -6,6 +6,18 @@ module Trice
       block ? runtime.instance_eval(&block) : static_time
     end
 
+    def set_reference_time(static_time = nil, &block)
+      around(:each) do |ex|
+        time = SpecHelper.extract_time(self, static_time, block)
+
+        Trice.with_reference_time(time) { ex.run }
+      end
+    end
+
+    def set_now_as_reference_time
+      set_reference_time(Time.now)
+    end
+
     def stub_requested_at(static_time = nil, &block)
       before(:each) do |ex|
         time = SpecHelper.extract_time(self, static_time, block)
