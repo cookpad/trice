@@ -26,7 +26,7 @@ module Trice
         when :controller
           request.headers['X-Requested-At'] = time.iso8601
         when :feature
-          set_header 'X-Requested-At', time.iso8601
+          page.driver.header 'X-Requested-At', time.iso8601
         else
           raise Trice::TestStubbingNotSupported, "Test stubbing for type: #{ex.metadata[:type]} is not supported"
         end
