@@ -116,10 +116,10 @@ Setting callable object let you choice enable/disable dinamically by seeing requ
 ```ruby
 our_office_network = IPAddr.new('203.0.113.0/24')
 
-Trice.support_performing_at_stubbing = ->(req) {
+Trice.support_performing_at_stubbing = ->(controller) {
   next true unless Rails.env.production?
 
-  our_office_network.include?(req.remote_ip)
+  our_office_network.include?(controller.request.remote_ip)
 }
 ```
 

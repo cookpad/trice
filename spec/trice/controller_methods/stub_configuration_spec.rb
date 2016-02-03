@@ -16,20 +16,20 @@ describe Trice::ControllerMethods::StubConfiguration do
   end
 
   context 'initialized by callable' do
-    let(:request) { double('request') }
+    let(:controller) { double('controller') }
 
     let(:config) do
-      init_with ->(req) { IPAddr.new('192.168.0.1/30').include?(req.remote_ip) }
+      init_with ->(c) { IPAddr.new('192.168.0.1/30').include?(c.request.remote_ip) }
     end
 
     specify do
-      expect(request).to receive(:remote_ip).and_return('192.168.0.2')
-      expect(config.stubbable?(request)).to be true
+      expect(controller).to receive_message_chain(:request, :remote_ip).and_return('192.168.0.2')
+      expect(config.stubbable?(controller)).to be true
     end
 
     specify do
-      expect(request).to receive(:remote_ip).and_return('192.168.1.2')
-      expect(config.stubbable?(request)).to be false
+      expect(controller).to receive_message_chain(:request, :remote_ip).and_return('192.168.1.2')
+      expect(config.stubbable?(controller)).to be false
     end
   end
 end

@@ -10,7 +10,7 @@ module Trice
       end
 
       def around(controller, &action)
-        t = determine_requested_at(controller.request)
+        t = determine_requested_at(controller)
 
         controller.request.env['trice.reference_time'] = t
 
@@ -19,9 +19,9 @@ module Trice
 
       private
 
-      def determine_requested_at(request)
-        if @stub_configuration.stubbable?(request)
-          extract_requested_at(request) || Time.now
+      def determine_requested_at(controller)
+        if @stub_configuration.stubbable?(controller)
+          extract_requested_at(controller.request) || Time.now
         else
           Time.now
         end
