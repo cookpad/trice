@@ -89,7 +89,7 @@ $ curl https://example.com/campaigns/12345?_requested_at=20160215130
 
 Or can set HTTP header, useful for tests.
 ```
-TriceRequestedAt: 2016-02-15T13:00:00+09:00
+X-REQUESTED-AT: 2016-02-15T13:00:00+09:00
 ```
 
 Value format, which specified both query parameter and header, should be `Time.parsse` parasable.
