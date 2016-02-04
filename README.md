@@ -99,7 +99,7 @@ Value format, which specified both query parameter and header, should be `Time.p
 Toggle requested at stubbing in `config/initializers`. The default is below, enabled unelss `Rails.env.production?`.
 
 ```ruby
-Trice.support_performing_at_stubbing = !Rails.env.production?
+Trice.support_requested_at_stubbing = !Rails.env.production?
 ```
 
 Setting callable object let you choice enable/disable dinamically by seeing request.
@@ -107,7 +107,7 @@ Setting callable object let you choice enable/disable dinamically by seeing requ
 ```ruby
 our_office_network = IPAddr.new('203.0.113.0/24')
 
-Trice.support_performing_at_stubbing = ->(controller) {
+Trice.support_requested_at_stubbing = ->(controller) {
   next true unless Rails.env.production?
 
   our_office_network.include?(controller.request.remote_ip)
