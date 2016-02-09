@@ -1,6 +1,16 @@
 require 'spec_helper'
 require 'trice_controller_method_test_controller'
 
+describe 'TriceControllerMethodTestController E2E', type: :request do
+  scenario 'hi' do
+    get '/bang'
+
+    expect(response.status).to eq 400
+
+    p JSON.parse(response.body)
+  end
+end
+
 describe TriceControllerMethodTestController, type: :controller do
   describe '#requested_at should be same time' do
     before do
