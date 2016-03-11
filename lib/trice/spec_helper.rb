@@ -1,6 +1,8 @@
 require 'trice/errors'
 
 module Trice
+  class TestStubbingNotSupported < Error; end
+
   module SpecHelper
     def self.extract_time(runtime, static_time, block)
       block ? runtime.instance_eval(&block) : static_time
