@@ -23,7 +23,7 @@ describe Trice::ReferenceTimeAccessor do
     specify { expect { Trice.reference_time }.to raise_error(Trice::NoReferenceTime) }
   end
 
-  describe 'Trice.with_refrence_time' do
+  describe 'Trice.with_reference_time' do
     let(:before_ref_time) { Time.now }
 
     specify do

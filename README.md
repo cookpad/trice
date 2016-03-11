@@ -22,7 +22,7 @@ $ bundle
 
 ### With Rails controller
 
-This gem aims to serve consistency of time handling using refrence time to Rails application.
+This gem aims to serve consistency of time handling using reference time to Rails application.
 The layer which should set reference time is controller layer, because reference time is one of external input.
 
 Include `Trice::ControllerMethods` to your controller
@@ -55,23 +55,23 @@ end
 
 ### Setting consistent reference time
 
-Set reference time with `Trice.refrence_time = _time_` or `Trice.with_refrence_time(_time_, &block)`.
+Set reference time with `Trice.reference_time = _time_` or `Trice.with_reference_time(_time_, &block)`.
 Accessible by `Trice.reference_time`..
 
 ```ruby
 p Time.now
 => 2016-02-01 11:25:37 +0900
 
-Trice.with_refrence_time = Time.iso8601('2016-02-01T09:00:00Z')
+Trice.with_reference_time = Time.iso8601('2016-02-01T09:00:00Z')
 p Trice.reference_time
 # => 2016-02-01 09:00:00 UTC
 
-Trice.with_refrence_time(Time.iso8601('2016-02-01T10:00:00Z')) do
+Trice.with_reference_time(Time.iso8601('2016-02-01T10:00:00Z')) do
   p Trice.reference_time
   # => 2016-02-01 10:00:00 UTC
 end
 
-Trice.with_refrence_time = nil
+Trice.with_reference_time = nil
 p Trice.reference_time
 # => raise Trice::NoReferenceTime
 ```
@@ -127,13 +127,13 @@ end
 I recommend to pass reference time to a model by method and/or constructor argument because reference time is an external input, should be handled controller layer.
 But sometimes it is required  from deep inside of model logics and tests for them.
 
-Model unit spec has `with_refrence_time` and `set_now_to_reference_time` declarition method to set `Trice.reference_time` in an example.
+Model unit spec has `with_reference_time` and `set_now_to_reference_time` declarition method to set `Trice.reference_time` in an example.
 
 ```ruby
 describe MyModel do
   let(:reference_time) { Time.zone.parse('2016/02/03 12:00') }
   context  do
-    set_reference_time { refrence_time }
+    set_reference_time { reference_time }
 
     let(:model) { MyModel.find_by_something(key) }
 
@@ -174,4 +174,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/cookpa
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
