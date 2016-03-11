@@ -31,7 +31,7 @@ describe TriceControllerMethodTestController, type: :controller do
       specify { expect(assigns(:requested_at_x)).to eq time }
     end
 
-    context 'stubbed by helpe method (static)' do
+    context 'stubbed by helper method (static)' do
       t = Time.now
       stub_requested_at t
 
@@ -42,7 +42,7 @@ describe TriceControllerMethodTestController, type: :controller do
       specify { expect(assigns(:requested_at_x)).to eq Time.at(t.to_i).utc }
     end
 
-    context 'stubbed by helpe method (block)' do
+    context 'stubbed by helper method (block)' do
       let(:time) { Time.zone.parse('2016-02-01 00:00:00') }
       stub_requested_at { time }
 
