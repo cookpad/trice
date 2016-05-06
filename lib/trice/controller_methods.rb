@@ -9,7 +9,9 @@ module Trice
 
     included do |controller|
       if controller.ancestors.include?(ActionController::Base)
-        use RawReferenceTime
+        unless controller.middleware_stack.include?(RawReferenceTime)
+          controller.use RawReferenceTime
+        end
 
         config = StubConfiguration.new(Trice.support_requested_at_stubbing)
         prepend_around_action ReferenceTimeAssignment.new(config)
