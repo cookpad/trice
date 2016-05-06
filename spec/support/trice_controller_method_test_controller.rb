@@ -16,16 +16,34 @@ app.config.root = File.expand_path('../fake_rails_app', (__FILE__))
 Rails.backtrace_cleaner.remove_silencers!
 app.initialize!
 app.routes.draw do
-  get 'hi', to: 'trice_controller_method_test#hi'
+  get 'hi',   to: 'trice_controller_method_test#hi'
+  get 'bang', to: 'trice_controller_method_test#bang'
 end
+
+TriceTestError = Class.new(StandardError)
 
 class TriceControllerMethodTestController < ActionController::Base
   include Trice::ControllerMethods
+
+  before_action :raise_rescued_exception, only: 'bang'
+
+  rescue_from TriceTestError do
+    render json: {expected_requested_at: requested_at}, status: 400
+  end
 
   def hi
     @requested_at_x  = requested_at
     @requested_at_y  = requested_at
 
-    render nothing: true
+    render json: {requested_at_x: @requested_at_x, requested_at_y: @requested_at_y}
+  end
+
+  def bang
+  end
+
+  private
+
+  def raise_rescued_exception
+    raise TriceTestError
   end
 end

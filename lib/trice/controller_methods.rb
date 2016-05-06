@@ -1,3 +1,4 @@
+require 'trice/controller_methods/raw_reference_time'
 require 'trice/controller_methods/reference_time_assignment'
 require 'trice/controller_methods/stub_configuration'
 
@@ -8,6 +9,10 @@ module Trice
 
     included do |controller|
       if controller.ancestors.include?(ActionController::Base)
+        unless controller.middleware_stack.include?(RawReferenceTime)
+          controller.use RawReferenceTime
+        end
+
         config = StubConfiguration.new(Trice.support_requested_at_stubbing)
         prepend_around_action ReferenceTimeAssignment.new(config)
 
