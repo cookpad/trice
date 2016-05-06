@@ -6,8 +6,6 @@ describe 'TriceControllerMethodTestController E2E', type: :request do
     get '/bang'
 
     expect(response.status).to eq 400
-
-    p JSON.parse(response.body)
   end
 end
 

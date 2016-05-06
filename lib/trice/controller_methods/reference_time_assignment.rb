@@ -12,8 +12,6 @@ module Trice
       def around(controller, &action)
         t = determine_requested_at(controller)
 
-        controller.request.env['trice.reference_time'] = t
-
         Trice.with_reference_time(t, &action)
       end
 
