@@ -92,7 +92,7 @@ Or can set HTTP header, useful for tests.
 X-REQUESTED-AT: 2016-02-15T13:00:00+09:00
 ```
 
-Value format, which specified both query parameter and header, should be `Time.parsse` parasable.
+Value format, which specified both query parameter and header, should be `Time.parse` parasable.
 
 #### Enable/Disable stubbing
 
