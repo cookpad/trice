@@ -84,7 +84,7 @@ Trice allows you to stub reference time to run travelled time-testing and / or p
 
 Set `_requested_at=<timish>` query parameter like below
 ```
-$ curl https://example.com/campaigns/12345?_requested_at=20160215130
+$ curl https://example.com/campaigns/12345?_requested_at=201602151300
 ```
 
 Or can set HTTP header, useful for tests.
