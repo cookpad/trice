@@ -39,7 +39,7 @@ Then your controller and view gets an accessor method to access consistent time 
 
 ### Include helper module outside of controller
 
-Inlude `Trice::ReferenceTime` add `#reference_time` method to lookup current reference time.
+Include `Trice::ReferenceTime` add `#reference_time` method to lookup current reference time.
 
 Use it in Rails model.
 
