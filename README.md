@@ -92,17 +92,17 @@ Or can set HTTP header, useful for tests.
 X-REQUESTED-AT: 2016-02-15T13:00:00+09:00
 ```
 
-Value format, which specified both query parameter and header, should be `Time.parsse` parasable.
+Value format, which specified both query parameter and header, should be `Time.parse` parasable.
 
 #### Enable/Disable stubbing
 
-Toggle requested at stubbing in `config/initializers`. The default is below, enabled unelss `Rails.env.production?`.
+Toggle requested at stubbing in `config/initializers`. The default is below, enabled unless `Rails.env.production?`.
 
 ```ruby
 Trice.support_requested_at_stubbing = !Rails.env.production?
 ```
 
-Setting callable object let you choice enable/disable dinamically by seeing request.
+Setting callable object let you choice enable/disable dynamically by seeing request.
 
 ```ruby
 our_office_network = IPAddr.new('203.0.113.0/24')
@@ -127,7 +127,7 @@ end
 I recommend to pass reference time to a model by method and/or constructor argument because reference time is an external input, should be handled controller layer.
 But sometimes it is required  from deep inside of model logics and tests for them.
 
-Model unit spec has `with_reference_time` and `set_now_to_reference_time` declarition method to set `Trice.reference_time` in an example.
+Model unit spec has `with_reference_time` and `set_now_to_reference_time` declaration method to set `Trice.reference_time` in an example.
 
 ```ruby
 describe MyModel do
@@ -145,7 +145,7 @@ describe MyModel do
 end
 ```
 
-Feature specs (or othre Capybara based E2E tests) also has helper method using stubbing mechanism. `stub_requested_at <timish>` set `X-Trice-Requested-At` automatically.
+Feature specs (or other Capybara based E2E tests) also has helper method using stubbing mechanism. `stub_requested_at <timish>` set `X-Trice-Requested-At` automatically.
 
 ```ruby
 context 'on ひな祭り day' do
