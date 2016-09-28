@@ -10,27 +10,23 @@ module Trice
       end
 
       def around(controller, &action)
-        t = determine_requested_at(controller)
+        t = stubbed_requested_at(controller) || Time.now
 
         Trice.with_reference_time(t, &action)
       end
 
       private
 
-      def determine_requested_at(controller)
-        if @stub_configuration.stubbable?(controller)
-          extract_requested_at(controller.request) || Time.now
-        else
-          Time.now
+      def stubbed_requested_at(controller)
+        requested_at = requested_at_string(controller.request)
+
+        if requested_at && @stub_configuration.stubbable?(controller)
+          Time.zone.parse(requested_at)
         end
       end
 
-      def extract_requested_at(request)
-        if request.params[QUERY_STUB_KEY]
-          Time.zone.parse(request.params[QUERY_STUB_KEY])
-        elsif request.headers[HEADER_STUB_KEY]
-          Time.zone.parse(request.headers[HEADER_STUB_KEY])
-        end
+      def requested_at_string(request)
+        request.params[QUERY_STUB_KEY] || request.headers[HEADER_STUB_KEY]
       end
     end
   end
