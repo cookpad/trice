@@ -39,6 +39,16 @@ describe TriceControllerMethodTestController, type: :controller do
       specify { expect(assigns(:requested_at_x)).to eq time }
     end
 
+    context 'StubConfiguration#stubbable? is not evaluated without stubbed by param or header' do
+      before do
+        expect_any_instance_of(Trice::ControllerMethods::StubConfiguration).not_to receive(:stubbable?)
+
+        get :hi
+      end
+
+      specify { expect(assigns(:requested_at_x)).to be_acts_like(:time) }
+    end
+
     context 'stubbed by helper method (static)' do
       t = Time.now
       stub_requested_at t
