@@ -1,4 +1,7 @@
 language: ruby
 rvm:
   - 2.2.4
+gemfile:
+  - gemfiles/as4.gemfile
+  - gemfiles/as5.gemfile
 before_install: gem install bundler -v 1.11.2
