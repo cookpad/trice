@@ -17,9 +17,10 @@ module Trice
         prepend_around_action ReferenceTimeAssignment.new(config)
 
         helper_method :requested_at
-        hide_action   :requested_at
       end
     end
+
+    private
 
     def requested_at
       Trice.reference_time

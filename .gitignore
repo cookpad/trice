@@ -8,3 +8,5 @@
 /spec/reports/
 /tmp/
 spec/support/fake_rails_app/log/*
+/gemfiles/.bundle/
+/gemfiles/*.lock
