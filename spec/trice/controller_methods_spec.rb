@@ -86,3 +86,56 @@ describe TriceControllerMethodTestController, type: :controller do
     end
   end
 end
+
+describe 'stub_requested_at helper for feature spec', type: :feature do
+  let(:time) { Time.zone.parse('2016-02-01 00:00:00') }
+  stub_requested_at { time }
+
+  def with_driver(driver, &block)
+    saved = Capybara.current_driver
+    Capybara.current_driver = driver
+    block.call
+  ensure
+    Capybara.current_driver = saved
+  end
+
+  context 'with rack_test driver' do
+    around do |example|
+      with_driver(:rack_test) do
+        example.run
+      end
+    end
+
+    scenario do
+      visit '/hi'
+      expect(Time.zone.parse(JSON.parse(page.body)['requested_at_x'])).to eq(time)
+    end
+  end
+
+  context 'with webkit driver' do
+    around do |example|
+      with_driver(:webkit) do
+        example.run
+      end
+    end
+
+    scenario do
+      visit '/hi'
+      expect(Time.zone.parse(JSON.parse(page.body)['requested_at_x'])).to eq(time)
+    end
+  end
+
+  context 'with poltergeist driver' do
+    around do |example|
+      with_driver(:poltergeist) do
+        example.run
+      end
+    end
+
+    scenario do
+      visit '/hi'
+      # XXX: poltergeist returns `<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">{"requested_at_x":"2016-02-01T00:00:00.000Z","requested_at_y":"2016-02-01T00:00:00.000Z"}</pre></body></html>`
+      expect(page.body).to include(time.to_json)
+    end
+  end
+end

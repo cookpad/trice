@@ -28,7 +28,16 @@ module Trice
         when :controller
           request.headers['X-Requested-At'] = time.iso8601
         when :feature
-          page.driver.header 'X-Requested-At', time.iso8601
+          case
+          when page.driver.respond_to?(:header)
+            # rack-test, capybara-webkit
+            page.driver.header('X-Requested-At', time.iso8601)
+          when page.driver.respond_to?(:add_header)
+            # poltergeist
+            page.driver.add_header('X-Requested-At', time.iso8601)
+          else
+            raise Trice::TestStubbingNotSupported, "Test stubbing for driver #{page.driver.class} is not supported"
+          end
         else
           raise Trice::TestStubbingNotSupported, "Test stubbing for type: #{ex.metadata[:type]} is not supported"
         end
