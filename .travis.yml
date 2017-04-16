@@ -11,3 +11,5 @@ gemfile:
 matrix:
   allow_failures:
     - rvm: ruby-head
+script:
+  - xvfb-run bundle exec rake

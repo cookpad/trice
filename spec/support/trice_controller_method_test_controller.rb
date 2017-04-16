@@ -1,6 +1,5 @@
 require 'action_controller/railtie'
 require 'action_view/railtie'
-require 'rspec/rails'
 require 'trice/railtie'
 
 ENV['RAILS_ENV'] ||= 'test'
@@ -47,3 +46,8 @@ class TriceControllerMethodTestController < ActionController::Base
     raise TriceTestError
   end
 end
+
+# rspec-rails must be initialized after rails
+require 'rspec/rails'
+require 'capybara-webkit'
+require 'capybara/poltergeist'
