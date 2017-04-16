@@ -1,7 +1,13 @@
 language: ruby
+sudo: false
 rvm:
-  - 2.2.4
+  - 2.2.7
+  - 2.3.4
+  - 2.4.1
+  - ruby-head
 gemfile:
   - gemfiles/as4.gemfile
   - gemfiles/as5.gemfile
-before_install: gem install bundler -v 1.11.2
+matrix:
+  allow_failures:
+    - rvm: ruby-head
