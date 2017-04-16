@@ -1,4 +1,5 @@
 # Trice
+[![Build Status](https://travis-ci.org/cookpad/trice.svg?branch=master)](https://travis-ci.org/cookpad/trice)
 
 Provides **reference time** concept to application. Use it instead of ad-hoc `Time.now`.
 
