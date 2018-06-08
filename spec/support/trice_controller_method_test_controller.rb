@@ -53,29 +53,32 @@ class TriceControllerMethodTestController < ActionController::Base
   end
 end
 
-class TriceApiControllerMethodTestController < ActionController::API
-  include Trice::ControllerMethods
+# AC::API is available since Rails 5.0.
+if defined?(ActionController::API)
+  class TriceApiControllerMethodTestController < ActionController::API
+    include Trice::ControllerMethods
 
-  before_action :raise_rescued_exception, only: 'bang'
+    before_action :raise_rescued_exception, only: 'bang'
 
-  rescue_from TriceTestError do
-    render json: {expected_requested_at: requested_at}, status: 400
-  end
+    rescue_from TriceTestError do
+      render json: {expected_requested_at: requested_at}, status: 400
+    end
 
-  def hi
-    @requested_at_x  = requested_at
-    @requested_at_y  = requested_at
+    def hi
+      @requested_at_x  = requested_at
+      @requested_at_y  = requested_at
 
-    render json: {requested_at_x: @requested_at_x, requested_at_y: @requested_at_y}
-  end
+      render json: {requested_at_x: @requested_at_x, requested_at_y: @requested_at_y}
+    end
 
-  def bang
-  end
+    def bang
+    end
 
-  private
+    private
 
-  def raise_rescued_exception
-    raise TriceTestError
+    def raise_rescued_exception
+      raise TriceTestError
+    end
   end
 end
 

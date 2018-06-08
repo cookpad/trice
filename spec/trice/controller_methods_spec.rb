@@ -9,11 +9,13 @@ describe 'TriceControllerMethodTestController E2E', type: :request do
   end
 end
 
-describe 'TriceApiControllerMethodTestController E2E', type: :request do
-  scenario 'hi' do
-    get '/api/bang'
+if defined?(ActionController::API)
+  describe 'TriceApiControllerMethodTestController E2E', type: :request do
+    scenario 'hi' do
+      get '/api/bang'
 
-    expect(response.status).to eq 400
+      expect(response.status).to eq 400
+    end
   end
 end
 
@@ -106,8 +108,10 @@ end
 describe TriceControllerMethodTestController, type: :controller do
   it_behaves_like 'trice controller methods'
 end
-describe TriceApiControllerMethodTestController, type: :controller do
-  it_behaves_like 'trice controller methods'
+if defined?(ActionController::API)
+  describe TriceApiControllerMethodTestController, type: :controller do
+    it_behaves_like 'trice controller methods'
+  end
 end
 
 describe 'stub_requested_at helper for feature spec', type: :feature do
