@@ -24,7 +24,11 @@ describe TriceControllerMethodTestController, type: :controller do
 
     context 'stubbed by query' do
       before do
-        get :hi, '_requested_at' => time.strftime('%Y%m%d%H%M%S')
+        if Rails.gem_version >= Gem::Version.new('5.0.0')
+          get :hi, params: { '_requested_at' => time.strftime('%Y%m%d%H%M%S') }
+        else
+          get :hi, '_requested_at' => time.strftime('%Y%m%d%H%M%S')
+        end
       end
 
       specify { expect(assigns(:requested_at_x)).to eq time }
@@ -77,7 +81,11 @@ describe TriceControllerMethodTestController, type: :controller do
       before do
         request.headers['X-Requested-At'] = 1.day.ago(time).iso8601
 
-        get :hi, '_requested_at' => time.strftime('%Y%m%d%H%M%S')
+        if Rails.gem_version >= Gem::Version.new('5.0.0')
+          get :hi, params: { '_requested_at' => time.strftime('%Y%m%d%H%M%S') }
+        else
+          get :hi, '_requested_at' => time.strftime('%Y%m%d%H%M%S')
+        end
       end
 
       specify 'prefers query params' do

@@ -4,17 +4,18 @@ require 'trice/railtie'
 
 ENV['RAILS_ENV'] ||= 'test'
 
-# see https://github.com/amatsuda/kaminari/blob/master/spec/fake_app/rails_app.rb
+# see https://github.com/kaminari/kaminari/blob/master/kaminari-core/test/fake_app/rails_app.rb
 
-app = Class.new(Rails::Application)
-app.config.secret_token = 'b4b25e4573dd9ce866547b49045eff30'
-app.config.session_store :cookie_store, :key => '_myapp_session'
-app.config.active_support.deprecation = :log
-app.config.eager_load = false
-app.config.root = File.expand_path('../fake_rails_app', (__FILE__))
+class TriceTestApp < Rails::Application
+  config.secret_token = 'b4b25e4573dd9ce866547b49045eff30'
+  config.session_store :cookie_store, :key => '_myapp_session'
+  config.active_support.deprecation = :log
+  config.eager_load = false
+  config.root = File.expand_path('../fake_rails_app', (__FILE__))
+end
 Rails.backtrace_cleaner.remove_silencers!
-app.initialize!
-app.routes.draw do
+Rails.application.initialize!
+Rails.application.routes.draw do
   get 'hi',   to: 'trice_controller_method_test#hi'
   get 'bang', to: 'trice_controller_method_test#bang'
 end
