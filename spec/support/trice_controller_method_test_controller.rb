@@ -18,6 +18,11 @@ Rails.application.initialize!
 Rails.application.routes.draw do
   get 'hi',   to: 'trice_controller_method_test#hi'
   get 'bang', to: 'trice_controller_method_test#bang'
+
+  scope 'api', module: nil do
+    get 'hi',   to: 'trice_api_controller_method_test#hi'
+    get 'bang', to: 'trice_api_controller_method_test#bang'
+  end
 end
 
 TriceTestError = Class.new(StandardError)
@@ -45,6 +50,35 @@ class TriceControllerMethodTestController < ActionController::Base
 
   def raise_rescued_exception
     raise TriceTestError
+  end
+end
+
+# AC::API is available since Rails 5.0.
+if defined?(ActionController::API)
+  class TriceApiControllerMethodTestController < ActionController::API
+    include Trice::ControllerMethods
+
+    before_action :raise_rescued_exception, only: 'bang'
+
+    rescue_from TriceTestError do
+      render json: {expected_requested_at: requested_at}, status: 400
+    end
+
+    def hi
+      @requested_at_x  = requested_at
+      @requested_at_y  = requested_at
+
+      render json: {requested_at_x: @requested_at_x, requested_at_y: @requested_at_y}
+    end
+
+    def bang
+    end
+
+    private
+
+    def raise_rescued_exception
+      raise TriceTestError
+    end
   end
 end
 

@@ -8,14 +8,15 @@ module Trice
     extend ActiveSupport::Concern
 
     included do |controller|
-      if controller.ancestors.include?(ActionController::Base)
-        unless controller.middleware_stack.include?(RawReferenceTime)
-          controller.use RawReferenceTime
-        end
+      unless controller.middleware_stack.include?(RawReferenceTime)
+        controller.use RawReferenceTime
+      end
 
-        config = StubConfiguration.new(Trice.support_requested_at_stubbing)
-        prepend_around_action ReferenceTimeAssignment.new(config)
+      config = StubConfiguration.new(Trice.support_requested_at_stubbing)
+      prepend_around_action ReferenceTimeAssignment.new(config)
 
+      # ActionController::API doesn't have helper_method
+      if respond_to?(:helper_method)
         helper_method :requested_at
       end
     end

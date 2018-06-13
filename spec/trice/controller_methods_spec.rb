@@ -9,7 +9,17 @@ describe 'TriceControllerMethodTestController E2E', type: :request do
   end
 end
 
-describe TriceControllerMethodTestController, type: :controller do
+if defined?(ActionController::API)
+  describe 'TriceApiControllerMethodTestController E2E', type: :request do
+    scenario 'hi' do
+      get '/api/bang'
+
+      expect(response.status).to eq 400
+    end
+  end
+end
+
+shared_examples 'trice controller methods' do
   describe '#requested_at should be same time' do
     before do
       get :hi
@@ -92,6 +102,15 @@ describe TriceControllerMethodTestController, type: :controller do
         expect(assigns(:requested_at_x)).to eq time
       end
     end
+  end
+end
+
+describe TriceControllerMethodTestController, type: :controller do
+  it_behaves_like 'trice controller methods'
+end
+if defined?(ActionController::API)
+  describe TriceApiControllerMethodTestController, type: :controller do
+    it_behaves_like 'trice controller methods'
   end
 end
 
