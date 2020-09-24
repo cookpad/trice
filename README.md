@@ -63,7 +63,7 @@ Accessible by `Trice.reference_time`..
 p Time.now
 => 2016-02-01 11:25:37 +0900
 
-Trice.with_reference_time = Time.iso8601('2016-02-01T09:00:00Z')
+Trice.reference_time = Time.iso8601('2016-02-01T09:00:00Z')
 p Trice.reference_time
 # => 2016-02-01 09:00:00 UTC
 
@@ -72,7 +72,7 @@ Trice.with_reference_time(Time.iso8601('2016-02-01T10:00:00Z')) do
   # => 2016-02-01 10:00:00 UTC
 end
 
-Trice.with_reference_time = nil
+Trice.reference_time = nil
 p Trice.reference_time
 # => raise Trice::NoReferenceTime
 ```
