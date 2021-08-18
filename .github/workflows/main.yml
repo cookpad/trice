@@ -1,0 +1,20 @@
+name: Ruby
+on: [push,pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby: [ '2.6', '2.7', '3.0' ]
+        rails: [ '4_2', '5_0', '5_1', '5_2' ]
+    name: Test on Ruby ${{ matrix.ruby }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+    - run: bundle install
+    - name: Run tests
+      env:
+        BUNDLE_GEMFILE: gemfiles/rails_${{ matrix.rails }}
+      run: xvfb-run bundle exec rake
