@@ -30,7 +30,7 @@ module Trice
         when :feature
           case
           when page.driver.respond_to?(:header)
-            # rack-test, capybara-webkit
+            # rack-test
             page.driver.header('X-Requested-At', time.iso8601)
           when page.driver.respond_to?(:add_header)
             # poltergeist
