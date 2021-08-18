@@ -6,7 +6,7 @@ jobs:
     strategy:
       matrix:
         ruby: [ '2.6', '2.7', '3.0' ]
-        rails: [ '4.2', '5.0', '5.1', '5.2' ]
+        rails: [ '5.0', '5.1', '5.2' ]
     name: Test on Ruby ${{ matrix.ruby }}
     env:
       BUNDLE_GEMFILE: gemfiles/Gemfile.${{ matrix.rails }}
