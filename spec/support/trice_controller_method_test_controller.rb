@@ -84,5 +84,4 @@ end
 
 # rspec-rails must be initialized after rails
 require 'rspec/rails'
-require 'capybara-webkit'
 require 'capybara/poltergeist'

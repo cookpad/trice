@@ -139,19 +139,6 @@ describe 'stub_requested_at helper for feature spec', type: :feature do
     end
   end
 
-  context 'with webkit driver' do
-    around do |example|
-      with_driver(:webkit) do
-        example.run
-      end
-    end
-
-    scenario do
-      visit '/hi'
-      expect(Time.zone.parse(JSON.parse(page.body)['requested_at_x'])).to eq(time)
-    end
-  end
-
   context 'with poltergeist driver' do
     around do |example|
       with_driver(:poltergeist) do
