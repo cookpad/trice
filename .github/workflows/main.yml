@@ -10,7 +10,7 @@ jobs:
         rails: [ '6.1', '7.0' ]
         continue-on-error: [true]
     continue-on-error: ${{ matrix.continue-on-error }}
-    name: Test on Ruby ${{ matrix.ruby }} x ${{ matrix.rails }}
+    name: Test on Ruby ${{ matrix.ruby }} x Rails ${{ matrix.rails }}
     env:
       BUNDLE_GEMFILE: gemfiles/Gemfile.${{ matrix.rails }}
     steps:
