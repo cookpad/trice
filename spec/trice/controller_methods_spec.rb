@@ -139,9 +139,9 @@ describe 'stub_requested_at helper for feature spec', type: :feature do
     end
   end
 
-  context 'with poltergeist driver' do
+  context 'with apparition driver' do
     around do |example|
-      with_driver(:poltergeist) do
+      with_driver(:apparition) do
         example.run
       end
     end
